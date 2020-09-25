@@ -1,0 +1,22 @@
+server:
+  port: 8902
+spring:
+  application:
+    name: authenticate-server-db
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: p@ssw0rd
+    
+
+logging:
+  level:
+    root: TRACE
+    com.micwsx.cloud.dao: TRACE
+    org.springframework.jdbc.core.JdbcTemplate: TRACE
+#    org:
+#      springframework:
+#        security: DEBUG
+#          web: DEBUG
+#            FilterChainProxy: DEBUG

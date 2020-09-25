@@ -1,0 +1,70 @@
+
+1.Token存储方式有内存，数据库和redis等
+2.Token表现形式有随机字符串和JWT等
+3.获取Token常见方式有client_credentials(客户端模式),password(密码模式),authorization_code(授权码模式),refresh_token,implicit
+根据客户端指定授权方式，常见组合方式authorization_code和refresh_token(针对浏览器访问客户端),password和refresh_token(针对移动客户端)
+
+client_credentials(客户端模式):不需要特定用户访问，粒度比较粗。
+    请求参数grant_type=client_credentials,scope,client_id,client_secret
+password(密码模式):需要用户登录，粒度较细。
+    Header: Authorization: Basic base64Encode(clientId:client_secret)
+    请求参数grant_type=password,scope,username,password
+authorization_code(授权码模式):需要用户登录，粒度较细。
+    第一步：浏览器跳转
+    http://localhost:8902/oauth/authorize?response_type=code&client_id=clientDemoApp&redirect_uri=https://www.baidu.com&scope=all&state=456
+    输入username和password
+    第二步：code获取accessToken
+    Header: Authorization: Basic base64Encode(clientId:client_secret)
+    请求参数grant_type=authorization_code,scope,code,redirect_uri
+
+4.刷新access_token
+http://localhost:8902/oauth/token?grant_type=refresh_token&refresh_token=8495d597-0560-4598-95ef-143c0855363c&client_id=client_2&client_secret=123456
+
+
+
+JWT生成密钥对
+#生成jks：
+keytool -genkeypair -alias server-jwt -validity 365 -keyalg RSA -dname "CN=jwt,OU=jtw,O=jwt,L=zurich,S=zurich, C=CH" -keypass p@ssword -keystore authenticate-server-jwt.jks -storepass 123456
+#转化jks->p12
+keytool -importkeystore -srckeystore authenticate-server-jwt.jks -destkeystore authenticate-server-jwt.p12 -srcstoretype jks -deststoretype pkcs12
+#转化p12->pem
+openssl pkcs12 -in authenticate-server-jwt.p12 -out authenticate-server-jwt.pem
+#转化公钥jks->cert(BEGIN CERTIFICATE) 使用前一部分显示内容，复制公钥内容新建文件public_jwt.cert粘贴公钥
+keytool -export -alias server-jwt -keystore authenticate-server-jwt.jks -rfc -file authenticate-server-jwt.cert
+#转化cert(BEGIN CERTIFICATE)->pem(BEGIN PUBLIC KEY)
+openssl x509 -in public_jwt.cert -pubkey -noout
+
+认证服务器持有私钥，服务持有公钥，客户端先从认证服务器拿到jwt,再拿jwt请求服务，服务不用再请求认证服务器认证jwt的有效性，直接使用公钥验证有效性，
+这样,认证服务器只负责颁发token，资源服务器自己验证token有效性，解决认证服务器单点问题。
+
+
+链路追踪
+skywalking/Zipkin/Elk
+traceid,spanId,true(代表要发日志监控平台)
+
+应用中引用spring-cloud-starter-sleuth
+spring.sleuth.sampler.percentage=1.0
+spring.zipkin.base-url=http://localhost:9411
+
+最终使用ELK整合
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

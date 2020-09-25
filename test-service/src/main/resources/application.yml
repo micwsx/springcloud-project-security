@@ -1,0 +1,27 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: test-service
+  main:
+    allow-bean-definition-overriding: true
+security:
+  oauth2:
+    #资源之间交互访问时先根据access-token-uri使用对象OAuth2RestTemplate获取访问目标资源的token,再回调携带token访问资源路径，如果之前通过此方式获取到的token,则可将直接携带token访问目标资源，不用再请求access-token-uri
+    client:
+      client-id: clientDemoApp
+      client-secret: thisisasecret
+      scope: all
+      grant-type: client_credentials
+      access-token-uri: http://127.0.0.1:8902/oauth/token
+    #外部访问资源携带token,指定验证token认证服务器
+    resource:
+      #user-info-uri和token-info-uri配置资源服务器-验证访问token是否有效，有效则返回有效包装的principle对象，这里只能使用IP只能通过keepalived集群保证高可用
+      user-info-uri: http://127.0.0.1:8902/security/check
+      token-info-uri: http://127.0.0.1:8902/oauth/check_token
+      # 若配置上面二个，配置选择哪个
+      prefer-token-info: false
+
+logging:
+  level:
+    root: TRACE

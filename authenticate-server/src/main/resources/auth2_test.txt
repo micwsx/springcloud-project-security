@@ -1,0 +1,198 @@
+
+1.password模式获取token
+
+POST http://localhost:8901/oauth/token
+
+Basic Authentication
+username:demoApp
+password:thisisasecret
+
+Body:
+grant_type=password&scope=all&username=michael&password=123456
+
+response:
+{
+    "access_token": "96b90a5d-7b2a-45aa-92cc-6f5ce494fd34",
+    "token_type": "bearer",
+    "refresh_token": "4cc3f27b-d9a4-4f71-b541-c2e2c73b7cd8",
+    "expires_in": 1199,
+    "scope": "all"
+}
+
+jwt:
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiZGVtb0FwcCJdLCJ1c2VyX25hbWUiOiJtaWNoYWVsIiwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTU5ODg2ODI1MCwiYXV0aG9yaXRpZXMiOlsiVVNFUiJdLCJqdGkiOiI0MWU0MGQ3Ny1iNmY1LTRjOGYtYWUxZi1hZjBlZGY5ZDQ5MzQiLCJjbGllbnRfaWQiOiJkZW1vQXBwIn0.DeYMa-HSFH-vYOiutVeNMDEBoXthTihSrE8VZjsnpeM",
+    "token_type": "bearer",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiZGVtb0FwcCJdLCJ1c2VyX25hbWUiOiJtaWNoYWVsIiwic2NvcGUiOlsiYWxsIl0sImF0aSI6IjQxZTQwZDc3LWI2ZjUtNGM4Zi1hZTFmLWFmMGVkZjlkNDkzNCIsImV4cCI6MTU5ODkxNzA1MCwiYXV0aG9yaXRpZXMiOlsiVVNFUiJdLCJqdGkiOiI4Y2U2NzRjMS00Y2ExLTRhMWQtYWUwOC0wZTgzZDYyNTBlODciLCJjbGllbnRfaWQiOiJkZW1vQXBwIn0.Q7gjkqsnkh7Me8vK7FEyrXrE8X5ap4ThFMHW4lf2yEw",
+    "expires_in": 1199,
+    "scope": "all",
+    "jti": "41e40d77-b6f5-4c8f-ae1f-af0edf9d4934"
+}
+
+
+2.client_credentials模式获取token
+POST http://localhost:8901/oauth/token
+
+body:
+grant_type=client_credentials&scope=all&client_id=demoApp&client_secret=123456
+
+response:
+{
+    "access_token": "2681c730-5e45-4ba5-8a9e-b45a82cf5818",
+    "token_type": "bearer",
+    "expires_in": 1026,
+    "scope": "all"
+}
+jwt:
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiZGVtb0FwcCJdLCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTk4ODY4MzIyLCJhdXRob3JpdGllcyI6WyJST0xFX0NsaWVudCJdLCJqdGkiOiI2N2E2ZWY0Ny1iYzExLTRjMTQtYTNhNi1hNWE2NmNmODU2Y2IiLCJjbGllbnRfaWQiOiJkZW1vQXBwIn0.edhCLNJTIZCDqSvCM5BaNER0z5AVCrh_mRZpN9rg59Q",
+    "token_type": "bearer",
+    "expires_in": 1199,
+    "scope": "all",
+    "jti": "67a6ef47-bc11-4c14-a3a6-a5a66cf856cb"
+}
+
+3.authorization_code模式获取token
+
+http://localhost:8901/oauth/authorize?response_type=code&client_id=demoApp&redirect_uri=http://www.baidu.com&scope=all&state=123
+
+http://www.baidu.com/?code=Ror1vF&state=normal
+
+
+POST http://localhost:8901/oauth/token
+Basic Authentication
+username:demoApp
+password:thisisasecret
+
+body:
+grant_type=authorization_code
+code=Ror1vF
+redirect_uri=http://www.baidu.com
+scope=all
+
+jwt:
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiZGVtb0FwcCJdLCJ1c2VyX25hbWUiOiJtaWNoYWVsIiwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTU5ODg2ODUwNiwiYXV0aG9yaXRpZXMiOlsiVVNFUiJdLCJqdGkiOiJmNDYwMzdjZi02NTI2LTRkNjgtOWIyMy1hMWUxZjEyMzg4NTAiLCJjbGllbnRfaWQiOiJkZW1vQXBwIn0.EV7Goo1h2XcUcowI0cu5aSB82OGhJI3ObfH2Pbebdr0",
+    "token_type": "bearer",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiZGVtb0FwcCJdLCJ1c2VyX25hbWUiOiJtaWNoYWVsIiwic2NvcGUiOlsiYWxsIl0sImF0aSI6ImY0NjAzN2NmLTY1MjYtNGQ2OC05YjIzLWExZTFmMTIzODg1MCIsImV4cCI6MTU5ODkxNzMwNiwiYXV0aG9yaXRpZXMiOlsiVVNFUiJdLCJqdGkiOiJhOWIyYjU2Yi02MGQxLTRmZDYtODYyZS00NWU3YWU0OGY5YWQiLCJjbGllbnRfaWQiOiJkZW1vQXBwIn0.1GH1U7qBge6AIOlp_H2LGPH3gKMo-z32ofKPIN0tKms",
+    "expires_in": 1199,
+    "scope": "all",
+    "jti": "f46037cf-6526-4d68-9b23-a1e1f1238850"
+}
+
+
+
+
+
+
+
+
+1.登录人员多了，服务器session会很多，内存压力很大。
+
+2.使用第三方redis服务，session 与jsessionid绑定　有会话状态
+
+如果拿到了jessionid存在crsf攻击
+
+3.auth2.0
+客户端拿到认证服务器token,再有权限访问服务。
+
+此时的token不跟用户信息有关的，只是一个字符串，只要有token从哪个平台请求都是有效的。
+
+4.zuul, 下游系统，认证服务器
+
+zuul：没有必要做权限校验，它没有资源信息，只能简单校验，单纯做路由
+下游系统：需要与认证服务器交互做权限校验
+
+zuul：做权限校验　与认证服务器
+下游系统：不做权限校验（网络架构处理，服务之间只能内网访问，白名单，防火墙设置只能zull请求，），内网可能被攻破，有安全隐患
+
+从认证服务器获取token有客户端模式，密码模式，授权码模式。
+
+1.客户端模式：申请平台认证，提供各种资料，审核完成后，认证服务器发送一个凭证，id ,password,grant_type=client
+
+认证服务器搭建
+spring-cloud-starter-oauth2
+spring-cloud-starter-security
+@EnableAuthorizationServer
+
+
+
+
+
+2.密码模式:body中有grant_type=password,password,scope,username, 其中username和password是平台用户，一个token绑定一个客户
+authorization头中加入base64(username:password)放入请求头
+
+
+3.授权码模式：
+先拿code再拿token
+
+
+总结：
+客户端模式：有一些客户端并不需要客户登录，不需要注册
+密码模式：比客户端控制粒度更细，获取token跟用户绑定，每个用户都有一个token,根据token获取用户信息，根据用户信息获取用户角色。
+授权码模式：先拿授权码code,再回调地址获取token
+
+
+认证服务器挂了，就出现了单点问题，但配置中只能通过域名配置一个认证服务地址，由此可以通过虚拟ip　keepalived 实现高可用
+
+
+JWT
+keytool.exe工具生成authenticate-server-jwt.jks证书：
+keytool -genkeypair -alias server-jwt -validity 365 -keyalg RSA -dname "CN=jwt,OU=jtw,O=jwt,L=zurich,S=zurich, C=CH" -keypass p@ssword -keystore authenticate-server-jwt.jks -storepass 123456
+生成公钥jks->pem
+keytool -list -rfc --keystore authenticate-server-jwt.jks 或者 openssl x509 -inform pem -pubkey
+
+认证服务器持有私钥，服务持有公钥，
+客户端先从认证服务器拿到jwt,再拿jwt请求服务，服务不用再请求认证服务器认证jwt的有效性，直接使用公钥验证有效性，
+
+解决认证服务器单点问题，
+
+
+链路追踪
+skywalking/Zipkin/Elk
+traceid,spanId,true(代表要发日志监控平台)
+
+应用中引用spring-cloud-starter-sleuth
+spring.sleuth.sampler.percentage=1.0
+spring.zipkin.base-url=http://localhost:9411
+
+最终使用ELK整合
+
+
+表结构说明：
+clientdetails：存放client认证数据。
+oauth_client_details：存放client信息，主要操作类为JdbcClientDetailsService。
+oauth_client_token：存放client的Token信息。即通过client_credentials授权方式获得的Token。主要操作类为JdbcClientTokenServices。
+oauth_access_token：存放access token等，主要操作类为JdbcTokenStore。
+oauth_refresh_token：跟oath_access_token表类似，当client的grant type支持refresh token时才有记录。主要操作类为JdbcTokenStore。
+oauth_code：存放授权码（Authorization Code），即当client的grant type支持authorization_code时才有记录。主要操作类为JdbcAuthorizationCodeServices。
+oauth_approvals：存放用户授权client的信息，即当client的grant type支持authorization_code时才有记录。主要操作类为JdbcApprovalStore。
+
+授权服务器只负责颁发token（大部分只开放/auth/**路径请求），不存放任何资源，所以不需要在授权服务器上配置资源服务器配置。
+如果授权服务器有资源需要外部访问，则使用Basic Auth认证访问用户，因为
+
+
+资源服务器配置(项目product,Order)，配置访问资源路径需要认证和授权的路径，并且配置服务器验证token路径。用户携带token访问资源时，资源服务器会
+将token发送到授权服务器验证token（/user/token）,授权服务器验证token有效后封装成principal对象，再返回此对象给到资源服务器，认证成功后，资源服务器再
+根据Principal中的用户角色，与资源要求的角色是否匹配，验证是否有访问权限。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

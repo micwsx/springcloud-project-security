@@ -1,0 +1,22 @@
+server:
+  port: 8901
+spring:
+  application:
+    name: authenticate-server
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/auth?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: p@ssw0rd
+logging:
+  level:
+    root: info
+    com:
+      micwsx:
+        cloud:
+          dao:
+            debug
+    org:
+      springframework:
+        security:
+          debug
